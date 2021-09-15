@@ -8,13 +8,11 @@ import os, json
 from PIL import Image
 import numpy as np
 
+# Local
+from ..pixelator import ImageMap
+
 # ---------------------------------------------------------------------------- #
 
-
-
-# ------------------------------- Public types ------------------------------- #
-
-ImageMap = List[List[Tuple[int, int, int, int]]]
 
 
 # ------------------------------ Public methods ------------------------------ #
@@ -66,48 +64,6 @@ def merge_image_maps(
             for (r, g, b, a) in line_pixels
         ] for line_pixels in final
     ]
-
-def get_image_maps(
-    img_paths: List[str],
-    cache_path: str
-) -> List[ImageMap]:
-    if os.path.exists(cache_path):
-        try:
-            with open(cache_path, 'r') as f:
-                return json.load(f)
-        except:
-            os.remove(cache_path)
-
-    maps = [
-        get_image_map(img_path)
-        for img_path in img_paths
-    ]
-
-    with open(cache_path, 'w') as f:
-        json.dump(maps, f, indent=4)
-
-    return maps
-
-
-# ------------------------------ Private methods ----------------------------- #
-
-def get_image_map(
-    img_path: str
-) -> ImageMap:
-    im = Image.open(img_path, 'r')
-    pix_val = list(im.getdata())
-    size = im.size[0]
-    pixels = []
-
-    for i in range(size):
-        line = []
-
-        for j in range(size):
-            line.append(pix_val[i*size + j])
-
-        pixels.append(line)
-
-    return pixels
 
 
 # ---------------------------------------------------------------------------- #

@@ -1,11 +1,11 @@
 # ---------------------------------- Imports --------------------------------- #
 
 # System
+from library.pixelator.image_map import ImageMap
 from typing import List, Union
-import os
 
 # Local
-from ._utils import merge_image_maps, get_image_maps, render_image
+from ._utils import merge_image_maps, render_image
 from .render_options import RenderOptions
 
 # ---------------------------------------------------------------------------- #
@@ -16,16 +16,10 @@ from .render_options import RenderOptions
 
 def render(
     options: Union[RenderOptions, List[RenderOptions]],
-    img_paths: List[str],
-    pixel_maps_cache_folder_path: str
+    image_maps: List[ImageMap]
 ) -> None:
     if not isinstance(options, list):
         options = [options]
-    
-    image_maps = get_image_maps(
-        img_paths,
-        pixel_maps_cache_folder_path
-    )
 
     for _options in options:
         img_map = merge_image_maps(
