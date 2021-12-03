@@ -1,37 +1,40 @@
-# ------------------------------------------------------------ Imports ----------------------------------------------------------- #
+# ---------------------------------- Imports --------------------------------- #
 
 # System
-from typing import Optional
+from typing import Optional, Tuple, Union, List
 
 # Local
-from typing import Optional
 from .renderer import RenderOptions
 from .downloader import PunkType
 
-# -------------------------------------------------------------------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
 
 
 
-# ------------------------------------------------------ class: ImageOptions ----------------------------------------------------- #
+# ---------------------------- class: ImageOptions --------------------------- #
 
 class ImageOptions(RenderOptions):
+
+    # ------------------------------- Init ------------------------------ #
 
     def __init__(
         self,
         path: str,
         min_avg_alpha_perc: float = 0,
         color_overflow_by_alpha: bool = False,
-        scale: int = 1,
-        punk_type: Optional[PunkType] = None
+        size: int = 2**10,
+        bg_color: Optional[Tuple[int, int, int]] = None,
+        punk_type: Optional[Union[PunkType, List[PunkType]]] = None
     ):
-        self.punk_type = punk_type
+        self.punk_types = [punk_type] if isinstance(punk_type, PunkType) else punk_type
 
         super().__init__(
             path=path,
             min_avg_alpha_perc=min_avg_alpha_perc,
             color_overflow_by_alpha=color_overflow_by_alpha,
-            scale=scale
+            size=size,
+            bg_color=bg_color
         )
 
 
-# -------------------------------------------------------------------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #

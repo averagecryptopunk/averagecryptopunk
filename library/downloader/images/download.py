@@ -34,7 +34,7 @@ def get_punks(
         downloaded = False
 
         while not downloaded:
-            downloaded = download(PUNK_URL_FORMAT.format(i), punk_path)
+            downloaded = download(PUNK_URL_FORMAT.format(str(i).zfill(4)), punk_path)
 
             if not downloaded:
                 time.sleep(5)

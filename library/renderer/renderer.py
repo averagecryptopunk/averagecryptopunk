@@ -31,7 +31,8 @@ def render(
         render_image(
             img_map,
             _options.path,
-            _options.scale
+            _options.size,
+            _options.bg_color
         )
 
 

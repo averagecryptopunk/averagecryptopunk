@@ -1,7 +1,7 @@
 # ---------------------------------- Imports --------------------------------- #
 
 # System
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 import os, json
 
 # Pip
@@ -20,15 +20,21 @@ from ..pixelator import ImageMap
 def render_image(
     pixels: ImageMap,
     path: str,
-    scale: int = 100
+    size: int = 2**10,
+    bg_color: Optional[Tuple[int, int, int]] = None
 ) -> bool:
-    org_size = len(pixels)
-    target_size = org_size * scale
     array = np.array(pixels, dtype=np.uint8)
     img = Image.fromarray(array)
-    img = img.resize((target_size, target_size), Image.AFFINE)
+    img = img.resize((size, size), Image.AFFINE)
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    img.save(path)
+    
+    if bg_color:
+        bg = Image.new('RGB', (size, size), bg_color)
+        bg.paste(img, (0, 0), img)
+
+        bg.convert('RGBA').save(path)
+    else:
+        img.save(path)
 
     return os.path.exists(path)
 
